@@ -6,7 +6,8 @@ import org.springframework.data.repository.query.Param;
 
 import com.example.entity.Account;
 
-public interface AccountRepository {
+public interface AccountRepository extends JpaRepository<Account, Integer>{
+
     //@Modifying
     //@Transactional
     /* @Query("INSERT INTO Account(username,password) values (?,?)") 
@@ -14,5 +15,6 @@ public interface AccountRepository {
     @Query("SELECT username FROM Account WHERE username=?")
     public String getUsernameString(Account account); */
     @Query("FROM Account WHERE username=:username")
-    public Account gerAccountByUsername(@Param("username") String username);
+    public Account getAccountByUsername(@Param("username") String username);
+
 }

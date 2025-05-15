@@ -3,8 +3,13 @@ package com.example.controller;
 import java.util.List;
 
 import org.springframework.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.example.*;
+import com.example.entity.Account;
 import com.example.repository.AccountRepository;
 import com.example.repository.MessageRepository;
 /**
@@ -27,6 +32,22 @@ public class SocialMediaController {
         this.accountService = accountService;
     }
 
+    /* 1 -> API can process new User Registration*/ 
+    @PostMapping("/Register")
+    public ResponseEntity<Object> newUserAccountRegister(@RequestBody Account account) {
+        Account registeredAccount = accountService.getAccountById(account.getUsername());
+        if (registeredAccount != null) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
+    }
+
+    /* 2 -> API can process User Logins*/
+    /* 3 -> API can process creations of new messages*/
+    /* 4 -> API can retrieve all messages*/
+    /* 5 -> API can retrieve a message given it has its ID */
+    /* 6 -> API can delete a message given it has its message ID*/
+    /* 7 -> API can update a message text given it has its message ID*/
+    /* 8 -> API can retrieve all messages writeen by a particular user*/
     
 
 }
