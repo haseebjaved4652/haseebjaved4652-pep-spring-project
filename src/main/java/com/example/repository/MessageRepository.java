@@ -10,11 +10,10 @@ import com.example.entity.Message;
 
 
 public interface MessageRepository extends JpaRepository<Message, Integer> {
-    //@Query("DELETE FROM Message m WHERE m.id = ?1")
-    //int deleteMsById(Integer id);
+
 
     @Query("SELECT m FROM Message m WHERE m.postedBy = ?1")
-    Optional<List<Message>> getPostedBy(Integer postedBy);
+    public List<Message> fetchByPostedBy(Integer postedBy);
 
     //boolean existsById(Integer postedBy);
 }

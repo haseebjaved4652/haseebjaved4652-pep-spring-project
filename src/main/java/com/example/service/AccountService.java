@@ -1,19 +1,21 @@
 package com.example.service;
 
-import org.springframework.transaction.annotation.Transactional;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.entity.Account;
+import com.example.entity.Message;
 import com.example.repository.AccountRepository;
-import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 
 @Service
-@Transactional
 public class AccountService {
-    AccountRepository accountRepository;
-    Account account;
-    AccountService accountService;
-    public AccountService(AccountRepository accountRepository){
+
+    private AccountRepository accountRepository;
+
+    @Autowired
+    public AccountService(AccountRepository accountRepository) {
         this.accountRepository = accountRepository;
     }
 
@@ -25,11 +27,11 @@ public class AccountService {
     - If the registration is not successful due to a duplicate username, the response status should be 409. (Conflict)
     - If the registration is not successful for some other reason, the response status should be 400. (Client error)*/
    
-    public Account getaccountByUsername(String username){
-        return accountRepository.getAccountByUsername(username);
-    }
-    public Account saveAccount(Account account) {
-        return accountRepository.save(account);
+    public Account registerAccount(Account account) {
+        if(accountRepository.searchAccountByUsername(account.getUsername()) == null) {
+            return accountRepository.save(account);
+        }
+        return null;
     }
 
     /* 2 -> API caan process User Logins
@@ -39,18 +41,11 @@ public class AccountService {
     - The login will be successful if and only if the username and password provided in the request body JSON match a real account existing on the database. If successful, the response body should contain a JSON of the account in the response body, including its account_id. The response status should be 200 OK, which is the default.
     - If the login is not successful, the response status should be 401. (Unauthorized) */
 
-    public String getUserNameString(Account account2){
-        return account2.getUsername();
-    }
-    public Account getAccountById(int loginId){
-        return accountRepository.getAccountById(loginId);
+    public Account login(String username, String passwrod) {
+        return accountRepository.searchAccountByUsernameAndPassword(username, passwrod);
     }
 
-    public Account checkAccount(String username, String password) {
-        Account account = getAccountByUsername(username);
-        if(account.getPassword().contains(password)){
-            return account;
-        }
-        return null;
+    public Account getAccount(Integer accountId) {
+        return accountRepository.searchAccountByAccountId(accountId);
     }
 }
