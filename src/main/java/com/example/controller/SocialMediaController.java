@@ -44,7 +44,7 @@ public class SocialMediaController {
         this.messageService = messageService;
     }
 
-    
+
     /* 1 -> API can process new User Registration*/ 
     @PostMapping("/register") // endpoint POST localhost:8080/register
     public ResponseEntity<Account> register(@RequestBody Account model) {
